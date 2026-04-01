@@ -176,8 +176,6 @@ void mostrarAlunos(lista_aluno *lista) {
     printf("----------------------------\n");
 }
 
-
-
 int main(){
     lista_aluno lista_alunos = criar_listasequencial(); // variável guarda o retorno da função
 
