@@ -176,6 +176,31 @@ void mostrarAlunos(lista_aluno *lista) {
     printf("----------------------------\n");
 }
 
+/* A função (buscarAluno) percorre a lista sequencial procurando pelo RGM informado.
+ Se encontrar, exibe os dados do aluno. Se não, exibe mensagem de "não existe".*/
+void buscarAluno(lista_aluno *lista) {
+    char rgm[15];
+ 
+    printf("\nDigite o RGM: ");
+    scanf("%s", rgm);
+    getchar();
+ 
+    // Percorre todos os alunos cadastrados comparando o RGM
+    for (int i = 0; i <= lista->ultimo_aluno; i++) {
+        if (strcmp(lista->alunos[i].RGM, rgm) == 0) {
+            printf("\nAluno encontrado!\n");
+            printf("RGM: %s\n", lista->alunos[i].RGM);
+            printf("Disciplinas:\n");
+            mostrarDisciplinas(lista->alunos[i].disciplinas);
+            return;
+        }
+    }
+ 
+    // Se chegou aqui, o aluno não foi encontrado
+    printf("Aluno com RGM %s nao existe.\n", rgm);
+}
+
+
 int main(){
     lista_aluno lista_alunos = criar_listasequencial(); // variável guarda o retorno da função
 
