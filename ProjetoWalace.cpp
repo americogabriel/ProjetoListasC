@@ -72,7 +72,7 @@ int inserirDisciplina(Disciplina **l, char nome[], float nota) {
     while (aux->prox != NULL)
         aux = aux->prox;
 
-    // Após percorrer até o final da lista, define o aux->prox como o novo nó.
+    // Após percorrer até o final da lista, define o aux->prox como o novo nó(adiciona a nova discplina ao final da lista).
     aux->prox = novo;
     return 1;
 }
@@ -111,7 +111,7 @@ void cadastrarAluno(lista_aluno *lista) {
 
  // Pq usar fgets ao invés de (scanf e getchar)?  scanf para de ler no primeiro espaço, ou seja, se o user colocar "12345-67" ele só vai ler "12345", já o fgets lê a linha inteira até o '\n' e armazena na variável (entrada), por isso é necessário remover o '\n' na linha 115.
     printf("\nDigite o RGM do aluno: ");
-    fgets(rgm, 15, stdin); .
+    fgets(rgm, 15, stdin); 
     rgm[strcspn(rgm, "\n")] = '\0'; // remove o '\n' que o fgets deixa
  
     // Verifica se o RGM já existe na lista percorrendo todos os alunos cadastrados
@@ -202,6 +202,44 @@ void buscarAluno(lista_aluno *lista) {
     printf("Aluno com RGM %s nao existe.\n", rgm);
 }
 
+void RemoveAluno(Lista_aluno * lista, int posicao){ // Recebe um ponteiro para a lista de alunos e a posicao do aluno a ser removido, que veio da função:BuscaRGM
+    int i;
+
+    if(posicao < 0 || posicao > lista->ultimo_aluno){// caso a posição seja uma posição inválida
+        printf("Posição inválida!\n"); 
+        return; // sai da função
+    }
+    for(i = posicao;i<lista->ultimo_aluno;i++){ // for que vai começar do item a ser removido até o penúltimo item da lista
+        lista->alunos[i] = lista->alunos[i+1]; // define o aluno do índice atual como o do próximo índice(partindo do aluno a ser removido para não alterar os alunos que vieram antes dele)
+    }
+
+    lista->ultimo_aluno--; // ao final atualiza o índice do ultimo_aluno na struct Lista_aluno
+    // OBS: caso o aluno a ser o removido seja o último, o for não rodará mas quando decrementar o índice do ultimo_aluno ele será removido da listagem de alunos
+    mostrarAlunos(lista); // mostra lista atualizada
+};
+
+void BuscaRGM(Lista_aluno *lista){ // Busca a posicao do aluno que será removido
+    char rgm_buscado[15];
+    int i,pos = -1;
+
+    printf("\nDigite o RGM: ");
+    fgets(rgm_buscado, 15, stdin); // salva o RGM digitado pelo usuário
+    rgm_buscado[strcspn(rgm_buscado, "\n")] = '\0';
+
+    for(i = 0; i <= lista->ultimo_aluno; i++){ 
+        if(strcmp(lista->alunos[i].RGM,rgm_buscado) == 0){ // roda todo os alunos até entrar no if, se econtrar o aluno que possui o RGM buscado
+            pos = i; // salva o índice na variável pos
+            break;// sai do for
+        }
+    }
+    if (pos == -1){ // se pos continuou como -1, significa que não foi definido com a posicao do RGM buscado
+        printf("RGM não encontrado!!");
+        return;
+    }
+    else{
+        RemoveAluno(lista,pos); //chama a função que remove o aluno e exibe a nova lista
+    }
+}
 
 int main(){
     lista_aluno lista_alunos = criar_listasequencial(); // variável guarda o retorno da função
