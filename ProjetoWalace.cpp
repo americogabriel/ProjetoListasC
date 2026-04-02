@@ -107,10 +107,12 @@ void cadastrarAluno(lista_aluno *lista) {
  
     char rgm[15];
     char resp[5];
- 
+    char entrada[50];
+
+ // Pq usar fgets ao invés de (scanf e getchar)?  scanf para de ler no primeiro espaço, ou seja, se o user colocar "12345-67" ele só vai ler "12345", já o fgets lê a linha inteira até o '\n' e armazena na variável (entrada), por isso é necessário remover o '\n' na linha 115.
     printf("\nDigite o RGM do aluno: ");
-    scanf("%s", rgm);
-    getchar();
+    fgets(rgm, 15, stdin); .
+    rgm[strcspn(rgm, "\n")] = '\0'; // remove o '\n' que o fgets deixa
  
     // Verifica se o RGM já existe na lista percorrendo todos os alunos cadastrados
     for (int i = 0; i <= lista->ultimo_aluno; i++) {
@@ -120,8 +122,8 @@ void cadastrarAluno(lista_aluno *lista) {
         }
     }
 
-// Encontra a posição correta para inserir mantendo a ordem pelo RGM
-// Enquanto o RGM do aluno anterior for maior que o novo, empurra ele pra direita
+/* Encontra a posição correta para inserir, mantendo a ordem pelo RGM.
+ Enquanto o RGM do aluno anterior for maior que o novo, empurra ele pra direita*/
     int pos = lista->ultimo_aluno + 1;
     while (pos > 0 && strcmp(lista->alunos[pos - 1].RGM, rgm) > 0) {
         lista->alunos[pos] = lista->alunos[pos - 1]; // desloca o aluno para a direita
@@ -135,7 +137,7 @@ void cadastrarAluno(lista_aluno *lista) {
  
     printf("Aluno cadastrado com sucesso!\n");
  
-    // Agora cadastra as disciplinas do aluno usando a função inserirDisciplina já criada
+    // Cadastra as disciplinas do aluno usando a função inserirDisciplina já criada
     printf("\n-- Cadastro de disciplinas --\n");
     do {
         char nome[50];
@@ -146,8 +148,8 @@ void cadastrarAluno(lista_aluno *lista) {
         nome[strcspn(nome, "\n")] = '\0'; // remove o '\n' que o fgets deixa
  
         printf("Nota: ");
-        scanf("%f", &nota);
-        getchar();
+        fgets(entrada, 50, stdin);
+        nota = atof(entrada);  // (atof) converte a string de variavel (entrada) para float. PROBLEMA se o fdp do user colocar "abc" vai dar 0.0
  
         inserirDisciplina(&lista->alunos[pos].disciplinas, nome, nota);
  
@@ -182,8 +184,8 @@ void buscarAluno(lista_aluno *lista) {
     char rgm[15];
  
     printf("\nDigite o RGM: ");
-    scanf("%s", rgm);
-    getchar();
+    fgets(rgm, 15, stdin);
+    rgm[strcspn(rgm, "\n")] = '\0';
  
     // Percorre todos os alunos cadastrados comparando o RGM
     for (int i = 0; i <= lista->ultimo_aluno; i++) {
