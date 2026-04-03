@@ -52,13 +52,13 @@ int inserirDisciplina(Disciplina **l, char nome[], float nota) {
 	// O ponteiro novo recebe o nó criado pela função criarDisciplina,
 	// e o aux serve para percorrer a lista da forma correta.
     Disciplina *novo = criaDisciplina(nome, nota);
-    Disciplina *aux;
+    Disciplina *aux ;
 
 
 	// Verifica se a Disciplina foi criada corretamente.
-    if (novo == NULL)
+    if (novo == NULL){
         return 0;
-
+    }
     // Verifica se *l (ínicio da lista) é NULL, se for ele define *l como o nó (Disciplina) criado.
     if (*l == NULL) {
         *l = novo;
@@ -69,9 +69,9 @@ int inserirDisciplina(Disciplina **l, char nome[], float nota) {
     aux = *l;
     
     // Enquanto a lista não chegar ao final, a lista é percorrida (por exemplo, de A (aux) para B (aux->prox), de B (aux) para C (aux->prox), etc.
-    while (aux->prox != NULL)
+    while (aux->prox != NULL){
         aux = aux->prox;
-
+    }
     // Após percorrer até o final da lista, define o aux->prox como o novo nó(adiciona a nova discplina ao final da lista).
     aux->prox = novo;
     return 1;
@@ -241,8 +241,42 @@ void BuscaRGM(Lista_aluno *lista){ // Busca a posicao do aluno que será removid
     }
 }
 
-int main(){
-    lista_aluno lista_alunos = criar_listasequencial(); // variável guarda o retorno da função
+int main() {
+    lista_aluno myLista = criar_listasequencial();
+    int escolha;
+
+
+    do {
+        printf("\n1 - Inserir aluno\n2 - Mostrar\n3 - Buscar\n4 - Remover\n0 - Sair\n");
+        scanf("%d", &escolha);
+        getchar();
+
+        switch (escolha) {
+            case 1:
+                cadastrarAluno(&myLista);
+                break;
+
+            case 2:
+                mostrarAlunos(&myLista);
+                break;
+
+            case 3:
+                buscarAluno(&myLista);
+                break;
+
+            case 4:
+                BuscaRGM(&myLista);
+                break;
+
+            case 0:
+                printf("Saindo...\n");
+                break;
+
+            default:
+                printf("Opcao invalida!\n");
+        }
+
+    } while (escolha != 0);
 
     return 0;
 }
